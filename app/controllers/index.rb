@@ -8,7 +8,6 @@ get '/posts' do
 end
 
 get '/posts/:id/vote' do
-  puts "GOT INSIDE VOTE ROUTE"
   post = Post.find(params[:id])
   post.votes.create(value: 1)
 
@@ -18,11 +17,11 @@ get '/posts/:id/vote' do
 end
 
 delete '/posts/:id' do
-  # write logic for deleting posts here.
+  post = Post.find(params[:id])
+  post.destroy
 end
 
 post '/posts' do
-  puts "GOT INSIDE POSTS"
   Post.create( title: params[:title],
                username: Faker::Internet.user_name,
                comment_count: rand(1000) )

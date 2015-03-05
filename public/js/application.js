@@ -26,10 +26,17 @@ $(document).ready(function() {
       type: 'GET',
       data: { id: desiredId, username: desiredUsername }
     }).done( function(serverData) {
-      that.closest('article').find('.points').text(serverData.voteCount)
+      that.closest('article').find('.points').text(serverData.voteCount);
+      that.closest('.vote-button').css('color', 'green');
     }).fail( function() {
 
     });
+
+  });
+
+  $('.post-container').on('click', '.delete' function(e){
+    // e.preventDefault();
+
 
   });
 });

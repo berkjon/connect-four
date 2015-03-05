@@ -18,6 +18,7 @@ delete '/posts/:id' do
 end
 
 post '/posts' do
+  puts "GOT INSIDE POSTS"
   Post.create( title: params[:title],
                username: Faker::Internet.user_name,
                comment_count: rand(1000) )

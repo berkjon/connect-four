@@ -7,7 +7,32 @@ $(document).ready(function() {
 
   $('.post-container').on('click', '.vote-button', function(e) {
     e.preventDefault();
-    console.log("winning");
+
+    var desiredId = $(this).parent().attr("id")
+
+    console.log("can click on button");
+    console.log(desiredId);
+
+    var desiredUsername = $( '#' + desiredId + ' .username').html();
+
+    console.log(desiredUsername);
+
+    data =
+
+    // get the id for the post
+    // send the id to the post route
+    // the server updates the vote count
+    // the server tells ajax everything is done
+    // ajax updates the page if done & changes the button color to green
+    // otherwise ajax renders an error
+
+
+    $.ajax({ // should put this in a variable to call later...
+      url: '/posts',
+      type: 'POST',
+      data: { id: desiredId, username: desiredUsername }
+    });
+
   });
 });
 

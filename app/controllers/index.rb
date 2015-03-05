@@ -8,9 +8,13 @@ get '/posts' do
 end
 
 get '/posts/:id/vote' do
+  puts "GOT INSIDE VOTE ROUTE"
   post = Post.find(params[:id])
   post.votes.create(value: 1)
-  redirect "/posts"
+
+  content_type :json
+  { voteCount: post.points }.to_json
+
 end
 
 delete '/posts/:id' do

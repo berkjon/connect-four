@@ -27,18 +27,23 @@
 
   // add 1 to counter of the click event (global scope)
 
-$(".one").on('click', function() {
-  this.countDiscsInColumn();
-  this.placeDisc();
-})
 
-var countDiscsInColumn = function() {
-  this.find()
-}
 
-var placeDisc = function() {
+$("table").on('click', '.one', function(e) {
+  console.log("inside");
+  $(this).find(":first-child").addClass("red")
+  // debugger
+  // this.countDiscsInColumn();
+  // this.placeDisc();
+});
 
-}
+// var countDiscsInColumn = function() {
+//   this.find();
+// }
+
+// var placeDisc = function() {
+
+// }
 
 
 // var Board = function() {

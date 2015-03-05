@@ -1,0 +1,21 @@
+table, td, tr {
+    border: 1px solid black;
+    background-color: yellow;
+}
+
+tr {
+  height: 100px;
+}
+
+td {
+  width: 100px;
+}
+
+.circle {
+  border: 1px solid black;
+  margin: auto;
+  height: 90px;
+  width: 90px;
+  border-radius: 50px;
+  background-color: white;
+}

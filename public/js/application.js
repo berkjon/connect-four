@@ -50,15 +50,16 @@ $(document).ready(function() {
   $('#posts').on('submit', function(e){
     e.preventDefault();
 
-    var formData = $('#posts').serialize();
-    console.log(formData);
+    var title = $('#posts').serialize();
+    console.log(title);
 
     $.ajax({
       url:'/posts',
       type: 'POST',
-      data: { title: formData }
+      data: { title: title }
     }).done( function(serverData) {
       console.log("SUCCESS");
+      // dammit. Also have a bug about hwo the title is accessed........
       // now need to implement adding a post by appending it to the div
     }).fail( function(serverData) {
 

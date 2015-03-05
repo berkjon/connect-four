@@ -20,7 +20,8 @@ delete '/posts/:id' do
   post = Post.find(params[:id])
   post.destroy
 
-  { id: post.id }
+  content_type :json
+  { desiredId: post.id }.to_json
 end
 
 post '/posts' do

@@ -33,12 +33,17 @@ $(document).ready(function() {
     var desiredId = $(this).closest('article').attr('id')
     console.log(desiredId);
 
+    article = $(this).closest('article')
+
+    // debugger
     $.ajax({
       url: '/posts/' + desiredId,
       type: 'DELETE',
       data: { id: desiredId }
     }).done( function(serverData) {
-
+      article.remove();
+    }).fail( function(serverData) {
+      // need to implement
     });
 
 

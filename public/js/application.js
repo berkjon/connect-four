@@ -13,12 +13,6 @@ $(document).ready(function() {
     var desiredURL = '/posts/' + desiredId + '/vote'
     var desiredUsername = $( '#' + desiredId + ' .username').html();
 
-    // get the id for the post
-    // send the id & username to the post route
-    // the server updates the vote count
-    // the server tells ajax everything is done
-    // ajax updates the page if done & changes the button color to green
-    // otherwise ajax renders an error
     that = $(this)
 
     $.ajax({ // should put this in a variable to call later...
@@ -29,13 +23,23 @@ $(document).ready(function() {
       that.closest('article').find('.points').text(serverData.voteCount);
       that.closest('.vote-button').css('color', 'green');
     }).fail( function() {
-
+      // need to implement
     });
-
   });
 
-  $('.post-container').on('click', '.delete' function(e){
-    // e.preventDefault();
+  $('.post-container').on('click', '.delete', function(e){
+    e.preventDefault();
+
+    var desiredId = $(this).closest('article').attr('id')
+    console.log(desiredId);
+
+    $.ajax({
+      url: '/posts/' + desiredId,
+      type: 'DELETE',
+      data: { id: desiredId }
+    }).done( function(serverData) {
+
+    });
 
 
   });

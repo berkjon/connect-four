@@ -25,10 +25,14 @@ delete '/posts/:id' do
 end
 
 post '/posts' do
+  puts "INSIDE FORM DATA"
+
   Post.create( title: params[:title],
                username: Faker::Internet.user_name,
                comment_count: rand(1000) )
   redirect '/posts'
+
+  content_type :json
 end
 
 get '/post/:id' do

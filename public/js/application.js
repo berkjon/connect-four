@@ -13,7 +13,7 @@ $(document).ready(function() {
     var desiredURL = '/posts/' + desiredId + '/vote'
     var desiredUsername = $( '#' + desiredId + ' .username').html();
 
-    that = $(this)
+    var that = $(this)
 
     $.ajax({ // should put this in a variable to call later...
       url: desiredURL,
@@ -33,7 +33,7 @@ $(document).ready(function() {
     var desiredId = $(this).closest('article').attr('id')
     console.log(desiredId);
 
-    article = $(this).closest('article')
+    var article = $(this).closest('article')
 
     // debugger
     $.ajax({
@@ -45,7 +45,24 @@ $(document).ready(function() {
     }).fail( function(serverData) {
       // need to implement
     });
+  });
 
+  $('#posts').on('submit', function(e){
+    e.preventDefault();
+
+    var formData = $('#posts').serialize();
+    console.log(formData);
+
+    $.ajax({
+      url:'/posts',
+      type: 'POST',
+      data: { title: formData }
+    }).done( function(serverData) {
+      console.log("SUCCESS");
+      // now need to implement adding a post by appending it to the div
+    }).fail( function(serverData) {
+
+    })
 
   });
 });

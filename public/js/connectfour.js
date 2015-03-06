@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  tracker = new Tracker
+  tracker = new Tracker();
 
   var play_turn = function() {
     $(".current-player .circle").css("background-color", tracker.color);
@@ -8,8 +8,15 @@ $(document).ready(function(){
 
       if ($(current_column).find('.unplayed').length > 0) {
         // debugger
+        var $currentDisc = $(current_column).find('.unplayed').last();
         $(current_column).find('.unplayed').last().addClass(tracker.color + ' played').removeClass('unplayed');
+
+        //MUST RESET WINCOUNT HERE before checking winChecker
+        //OR AT LEAST BEFORE INDIVIDUAL CHECKS in winChecker wrapper
+        console.log(diagonalCheckLeft($currentDisc));
         tracker.turnColor();
+        //something like:
+        // console.log(diagonalCheckLeftTop($currentDisc));
       }
       $(".current-player .circle").css("background-color", tracker.color);
     });

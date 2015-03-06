@@ -13,6 +13,10 @@
 //Check if column has an unplayed square
 // if true, then run
 
+$(document).ready(function){
+  tracker = new Tracker
+}
+
 var play_turn = function() {
   $('td').on('click', function() {
     // debugger

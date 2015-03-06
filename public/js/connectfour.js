@@ -13,7 +13,10 @@ $(document).ready(function(){
 
         //MUST RESET WINCOUNT HERE before checking winChecker
         //OR AT LEAST BEFORE INDIVIDUAL CHECKS in winChecker wrapper
-        console.log(diagonalCheckLeft($currentDisc));
+        console.log("final count LEFT: " + diagonalCheckLeft($currentDisc, tracker.color));
+        console.log("final count RIGHT: " + diagonalCheckRight($currentDisc, tracker.color));
+
+        console.log("WIN?", diagonalCheck($currentDisc, tracker.color))
         tracker.turnColor();
         //something like:
         // console.log(diagonalCheckLeftTop($currentDisc));

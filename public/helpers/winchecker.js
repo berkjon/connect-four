@@ -1,18 +1,55 @@
 
+var getCurrentDiscColumn = function(currentDisc) {
+  return $(currentDisc).parent().attr("class");
+};
 
+var getColumnClassLeft = function(currentDiscColumn) {
+  return '.' + (currentDiscColumn - 1);
+};
 
+var getColumnClassRight = function(currentDiscColumn) {
+  return '.' + (+currentDiscColumn + 1);
+};
+
+var getNextDiscColor = function(nextDisc) {
+  return '.' + nextDisc.attr('class').split(' ')[1];
+};
+
+var getNorthWestCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discClassNorthWest = getColumnClassLeft(currentDiscColumn);
+  return $(currentDisc).parent().parent().prev().find(discClassNorthWest);
+};
+
+var getSouthEastCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discColumnSouthEast = getColumnClassRight(currentDiscColumn);
+  return $(currentDisc).parent().parent().next().find(discColumnSouthEast);
+}
+
+var getNorthEastCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discClassNorthEast = getColumnClassRight(currentDiscColumn);
+  return $(currentDisc).parent().parent().prev().find(discClassNorthEast);
+}
+
+var getSouthWestCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discClassSouthWest = getColumnClassLeft(currentDiscColumn);
+  return $(currentDisc).parent().parent().next().find(discClassSouthWest);
+}
 
 var diagonalCheck = function(currentDisc, color) {
-
   if (diagonalCheckLeft(currentDisc, color) == 4 || diagonalCheckRight(currentDisc, color) == 4) {
     return true;
   } else {
     return false;
   }
+};
 
-}
-
-
+var getColorClass = function(color) {
+  return '.' + color;
+};
 
 ///////////////////////////////////////////LEFT
 
@@ -27,19 +64,15 @@ var diagonalCheckLeft = function(currentDisc, color) {
 
 var diagonalNorthWest = function(currentDisc, currentWinCount, currentColor) {
 
-  var currentDiscColumn = $(currentDisc).parent().attr("class");
-  var discColumnClassToTheNorthWest = '.' + (currentDiscColumn - 1);
-  var cellToTheNorthWest = $(currentDisc).parent().parent().prev().find(discColumnClassToTheNorthWest);
-
-  var currentPlayerColor = '.' + tracker.color;
+  var cellToTheNorthWest = getNorthWestCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
   var nextDisc = cellToTheNorthWest.find(currentPlayerColor);
 
   if (nextDisc.length === 0) {
     return currentWinCount;
   }
 
-  var nextDiscColor = '.' + nextDisc.attr('class').split(' ')[1];
-
+  var nextDiscColor = getNextDiscColor(nextDisc);
   if (currentPlayerColor === nextDiscColor) {
     currentWinCount++;
     return diagonalNorthWest(nextDisc, currentWinCount);
@@ -48,21 +81,16 @@ var diagonalNorthWest = function(currentDisc, currentWinCount, currentColor) {
 
 var diagonalSouthEast = function(currentDisc, currentWinCount, currentColor) {
 
-  var currentDiscColumn = $(currentDisc).parent().attr("class");
   //added a + in front of currentDiscColumn to make it an integer
-  var discColumnToTheSouthEast = '.' + (+currentDiscColumn + 1);
-  var cellToTheSouthEast = $(currentDisc).parent().parent().next().find(discColumnToTheSouthEast);
-
-
-  var currentPlayerColor = '.' + tracker.color;
+  var cellToTheSouthEast = getSouthEastCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
   var nextDisc = cellToTheSouthEast.find(currentPlayerColor);
 
   if (nextDisc.length === 0) {
     return currentWinCount;
   }
 
-  var nextDiscColor = '.' + nextDisc.attr('class').split(' ')[1];
-
+  var nextDiscColor = getNextDiscColor(nextDisc);
   if (currentPlayerColor === nextDiscColor) {
     currentWinCount++;
     return diagonalSouthEast(nextDisc, currentWinCount);
@@ -70,11 +98,7 @@ var diagonalSouthEast = function(currentDisc, currentWinCount, currentColor) {
 };
 
 
-
-
 //////////////////////////////////////RIGHT
-
-
 
 
 var diagonalCheckRight = function(currentDisc, color) {
@@ -88,19 +112,15 @@ var diagonalCheckRight = function(currentDisc, color) {
 
 var diagonalNorthEast = function(currentDisc, currentWinCount, currentColor) {
 
-  var currentDiscColumn = $(currentDisc).parent().attr("class");
-  var discColumnClassToTheNorthEast = '.' + (+currentDiscColumn + 1);
-  var cellToTheNorthEast = $(currentDisc).parent().parent().prev().find(discColumnClassToTheNorthEast);
-
-  var currentPlayerColor = '.' + tracker.color;
+  var cellToTheNorthEast = getNorthEastCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
   var nextDisc = cellToTheNorthEast.find(currentPlayerColor);
 
   if (nextDisc.length === 0) {
     return currentWinCount;
   }
 
-  var nextDiscColor = '.' + nextDisc.attr('class').split(' ')[1];
-
+  var nextDiscColor = getNextDiscColor(nextDisc);
   if (currentPlayerColor === nextDiscColor) {
     currentWinCount++;
     return diagonalNorthEast(nextDisc, currentWinCount);
@@ -109,19 +129,15 @@ var diagonalNorthEast = function(currentDisc, currentWinCount, currentColor) {
 
 var diagonalSouthWest = function(currentDisc, currentWinCount, currentColor) {
 
-  var currentDiscColumn = $(currentDisc).parent().attr("class");
-  var discColumnToTheSouthWest = '.' + (currentDiscColumn - 1); //column
-  var cellToTheSouthWest = $(currentDisc).parent().parent().next().find(discColumnToTheSouthWest); //row
-
-  var currentPlayerColor = '.' + tracker.color;
+  var cellToTheSouthWest = getSouthWestCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
   var nextDisc = cellToTheSouthWest.find(currentPlayerColor);
 
   if (nextDisc.length === 0) {
     return currentWinCount;
   }
 
-  var nextDiscColor = '.' + nextDisc.attr('class').split(' ')[1];
-
+  var nextDiscColor = getNextDiscColor(nextDisc);
   if (currentPlayerColor === nextDiscColor) {
     currentWinCount++;
     return diagonalSouthWest(nextDisc, currentWinCount);

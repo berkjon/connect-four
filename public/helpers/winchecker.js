@@ -2,9 +2,6 @@
 
 
 
-
-
-
 var diagonalCheck = function(currentDisc, color) {
 
   if (diagonalCheckLeft(currentDisc, color) == 4 || diagonalCheckRight(currentDisc, color) == 4) {
@@ -14,9 +11,6 @@ var diagonalCheck = function(currentDisc, color) {
   }
 
 }
-
-
-
 
 
 

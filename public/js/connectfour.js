@@ -10,9 +10,11 @@ $(document).ready(function(){
         // debugger
         var $currentDisc = $(current_column).find('.unplayed').last();
         $(current_column).find('.unplayed').last().addClass(tracker.color + ' played').removeClass('unplayed');
-        console.log(diagonalCheckLeftTop($currentDisc));
+
+        //MUST RESET WINCOUNT HERE before checking winChecker
+        //OR AT LEAST BEFORE INDIVIDUAL CHECKS in winChecker wrapper
+        console.log(diagonalCheckLeft($currentDisc));
         tracker.turnColor();
-        // console.log($currentDisc); //this should be the current disk
         //something like:
         // console.log(diagonalCheckLeftTop($currentDisc));
       }

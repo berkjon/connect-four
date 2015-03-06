@@ -20,3 +20,4 @@ $(document).ready(function(){
 
   play_turn();
 });
+

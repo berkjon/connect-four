@@ -63,6 +63,19 @@ var getColorClass = function(color) {
   return '.' + color;
 };
 
+var getCurrentColumn = function(currentDisc) {
+  return $(currentDisc).parent().attr('class');
+}
+
+var getNextRow = function(currentDisc) {
+  return $(currentDisc).parent().parent().next();
+}
+
+var getNextDisc = function(currentDisc, nextRow) {
+  currentColumnClass = '.' + getCurrentColumn(currentDisc);
+  return nextRow.find(currentColumnClass).children(':first-child')
+}
+
 ///////////////////////////////////////////LEFT
 
 var diagonalCheckLeft = function(currentDisc, color) {
@@ -156,6 +169,8 @@ var diagonalSouthWest = function(currentDisc, currentWinCount, currentColor) {
   }
 };
 
+//////////////////////////////////////HORIZONTAL
+
 
 var horizontalChecker = function(currentDisc) {
   var currentWinCount = 1;
@@ -202,3 +217,33 @@ var checkRight = function(currentDisc, currentWinCount) {
     return checkRight(nextDisc, currentWinCount);
   }
 };
+
+//////////////////////////////////////RIGHT
+var verticalChecker = function(currentDisc, currentColor) {
+  currentWinCount = 1;
+  verticalHelper(currentDisc, currentColor);
+
+  if (currentWinCount >= 4) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+var verticalHelper= function(currentDisc, currentColor) {
+
+  nextRow = getNextRow(currentDisc);
+  nextDisc = getNextDisc(currentDisc, nextRow);
+
+  if (nextRow.length === 0) {
+    return currentWinCount;
+  }
+
+  if ( $(nextDisc).attr('class').match(currentColor) ) {
+    currentWinCount++;
+    return verticalHelper(nextDisc);
+  } else {
+    return currentWinCount;
+  }
+
+}

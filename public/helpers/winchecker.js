@@ -172,7 +172,7 @@ var diagonalSouthWest = function(currentDisc, currentWinCount, currentColor) {
 //////////////////////////////////////HORIZONTAL
 
 
-var horizontalChecker = function(currentDisc) {
+var horizontalCheck = function(currentDisc) {
   var currentWinCount = 1;
 
   leftWinCount = checkLeft(currentDisc, currentWinCount)
@@ -219,7 +219,7 @@ var checkRight = function(currentDisc, currentWinCount) {
 };
 
 //////////////////////////////////////RIGHT
-var verticalChecker = function(currentDisc, currentColor) {
+var verticalCheck = function(currentDisc, currentColor) {
   currentWinCount = 1;
   verticalHelper(currentDisc, currentColor);
 

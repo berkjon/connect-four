@@ -52,7 +52,10 @@ var getRightCell = function(currentDisc) {
 }
 
 var diagonalCheck = function(currentDisc, color) {
-  if (diagonalCheckLeft(currentDisc, color) == 4 || diagonalCheckRight(currentDisc, color) == 4) {
+  winCountLeft = diagonalCheckLeft(currentDisc, color);
+  winCountRight = diagonalCheckRight(currentDisc, color);
+
+  if (checkWinner(winCountLeft) || checkWinner(winCountRight)) {
     return true;
   } else {
     return false;
@@ -74,6 +77,14 @@ var getNextRow = function(currentDisc) {
 var getNextDisc = function(currentDisc, nextRow) {
   currentColumnClass = '.' + getCurrentColumn(currentDisc);
   return nextRow.find(currentColumnClass).children(':first-child')
+}
+
+var checkWinner = function(currentWinCount) {
+  if (currentWinCount >= 4) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 ///////////////////////////////////////////LEFT
@@ -178,11 +189,7 @@ var horizontalCheck = function(currentDisc) {
   leftWinCount = checkLeft(currentDisc, currentWinCount)
   totalWinCount = checkRight(currentDisc, leftWinCount)
 
-  if (totalWinCount == 4) {
-    return true;
-  } else {
-    return false;
-  }
+  return checkWinner(currentWinCount);
 
 };
 
@@ -223,11 +230,7 @@ var verticalCheck = function(currentDisc, currentColor) {
   currentWinCount = 1;
   verticalHelper(currentDisc, currentColor);
 
-  if (currentWinCount >= 4) {
-    return true;
-  } else {
-    return false;
-  }
+  return checkWinner(currentWinCount);
 }
 
 var verticalHelper= function(currentDisc, currentColor) {

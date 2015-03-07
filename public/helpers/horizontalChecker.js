@@ -14,45 +14,35 @@ var horizontalChecker = function(currentDisc) {
 };
 
 var checkLeft = function(currentDisc, currentWinCount) {
-  var currentDiscColumn = $(currentDisc).parent().attr("class");
-  var discColumnClassToLeft = '.' + (currentDiscColumn - 1);
-  var cellToTheLeft = $(currentDisc).parent().parent().find(discColumnClassToLeft);
-
-  var currentPlayerColor = '.' + tracker.color;
+  var cellToTheLeft = getLeftCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
   var nextDisc = cellToTheLeft.find(currentPlayerColor);
 
   if (nextDisc.length === 0) {
     return currentWinCount;
   }
 
-  var nextDiscColor = '.' + nextDisc.attr('class').split(' ')[1];
-
+  var nextDiscColor = getNextDiscColor(nextDisc);
   if (currentPlayerColor === nextDiscColor) {
     currentWinCount++;
     return checkLeft(nextDisc, currentWinCount);
   }
-
 };
 
 var checkRight = function(currentDisc, currentWinCount) {
-  var currentDiscColumn = $(currentDisc).parent().attr("class");
-  var discColumnClassToRight = '.' + (+currentDiscColumn + 1);
-  var cellToTheRight = $(currentDisc).parent().parent().find(discColumnClassToRight);
-
-  var currentPlayerColor = '.' + tracker.color;
+  var cellToTheRight = getRightCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color)
   var nextDisc = cellToTheRight.find(currentPlayerColor);
 
   if (nextDisc.length === 0) {
     return currentWinCount;
   }
 
-  var nextDiscColor = '.' + nextDisc.attr('class').split(' ')[1];
-
+  var nextDiscColor = getNextDiscColor(nextDisc);
   if (currentPlayerColor === nextDiscColor) {
     currentWinCount++;
     return checkRight(nextDisc, currentWinCount);
   }
-
 };
 
 

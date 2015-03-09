@@ -1,13 +1,15 @@
   var x;
 $(document).ready(function(){
-  var game1Ref = myDataRef.child('/12345');
+  var gameUrl = $('h3').attr('id');
+  // debugger;
+  var game1Ref = myDataRef.child('/'+gameUrl);
   game1Ref.set(blank_board);
   // debugger;
   tracker = new Tracker();
 
   myDataRef.on("value", function(snapshot){
-    renderBoard(snapshot.val()[12345]);
-    x = snapshot.val()[12345];
+    renderBoard(snapshot.val()[gameUrl]);
+    x = snapshot.val()[gameUrl];
     // console.log(snapshot.val().12345);
     // console.log(snapshot.val());
   });
@@ -20,8 +22,6 @@ $(document).ready(function(){
 
   var play_turn = function() {
 
-    // $(".current-player .circle").css("background-color", current_board.current_player);
-    // debugger;
     $('td').on('click', function(event) {
       // $(".current-player .circle").css("background-color", current_board.current_player);
 
@@ -29,13 +29,14 @@ $(document).ready(function(){
 
       if ($(current_column).find('.unplayed').length > 0) {
         var $currentDisc = $(current_column).find('.unplayed').last();
-        // $(current_column).find('.unplayed').last().addClass(x.color + ' played').removeClass('unplayed');
+        $(current_column).find('.unplayed').last().addClass(x.color + ' played').removeClass('unplayed');
         // debugger;
 
-        if (diagonalCheck($currentDisc, tracker.counter % 2) || horizontalCheck($currentDisc) || verticalCheck($currentDisc, tracker.counter % 2)) {
+        if (diagonalCheck($currentDisc, currentColor[tracker.counter % 2]) || horizontalCheck($currentDisc) || verticalCheck($currentDisc, currentColor[tracker.counter % 2])) {
           alert('winner!');
           return true;
         }
+        // debugger;
 
         /// code for board persistence
         // console.log('inside click function');

@@ -15,6 +15,7 @@ var getNextDiscColor = function(nextDisc) {
   return '.' + nextDisc.attr('class').split(' ')[1];
 };
 
+
 var getNorthWestCell = function(currentDisc) {
   var currentDiscColumn = getCurrentDiscColumn(currentDisc);
   var discClassNorthWest = getColumnClassLeft(currentDiscColumn);

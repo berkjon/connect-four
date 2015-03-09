@@ -1,8 +1,9 @@
 <html>
 <head>
   <title>Connect Four</title>
-  <link rel="stylesheet" type="text/css" href="../css/connectfour.css"/>
-  <link rel="stylesheet" type="text/css" href="../css/normalize.css"/>
+  <link rel="stylesheet" type="text/css" href="./css/connectfour.css"/>
+  <link rel="stylesheet" type="text/css" href="./css/normalize.css"/>
+  <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
 </head>
 <body>
 
@@ -16,6 +17,8 @@
       <h2>Current Player</h2>
     </div>
   </div>
+
+  <button id="restart-game">Restart Game</button>
 
   <div class="container">
     <table>
@@ -162,7 +165,8 @@
 
 </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="../helpers/turntracker.js"></script>
-    <script src="../helpers/winchecker.js"></script>
-    <script src="../js/connectfour.js"></script>
+    <script src="./helpers/turntracker.js"></script>
+    <script src="./helpers/winchecker.js"></script>
+    <script src="./js/connectfour.js"></script>
+    <script src="./helpers/firebase.js"></script>
 </html>

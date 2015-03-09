@@ -8,6 +8,7 @@ var Tracker = function() {
 
 Tracker.prototype.turnColor = function() {
   this.counter++;
+  console.log('inside turnColor function with value'+this.counter);
   if (this.counter % 2 === 0) {
     this.color = "red";
   } else {

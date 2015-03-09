@@ -18,7 +18,7 @@
 
 var diagonalCheckLeft = function(currentPlayedDisc) {
   var leftWinCount = 1; //counts itself too
-  console.log(leftWinCount);
+  // console.log(leftWinCount);
   // return diagonalCheckLeftBottom(currentPlayedDisc, leftWinCount)
   return diagonalCheckLeftTop(currentPlayedDisc, leftWinCount) + diagonalCheckLeftBottom(currentPlayedDisc, leftWinCount)
 };

@@ -19,25 +19,29 @@ $(document).ready(function(){
   })
 
   var play_turn = function() {
+
     // $(".current-player .circle").css("background-color", current_board.current_player);
     // debugger;
-    $('td').on('click', function() {
+    $('td').on('click', function(event) {
       // $(".current-player .circle").css("background-color", current_board.current_player);
 
       var current_column = "." + $(this).attr("class")
 
       if ($(current_column).find('.unplayed').length > 0) {
-        // var $currentDisc = $(current_column).find('.unplayed').last();
+        var $currentDisc = $(current_column).find('.unplayed').last();
         // $(current_column).find('.unplayed').last().addClass(x.color + ' played').removeClass('unplayed');
         // debugger;
 
+        if (diagonalCheck($currentDisc, tracker.counter % 2) || horizontalCheck($currentDisc) || verticalCheck($currentDisc, tracker.counter % 2)) {
+          alert('winner!');
+          return true;
+        }
+
         /// code for board persistence
-        console.log('inside click function');
+        // console.log('inside click function');
         var currentCol = current_board[$(this).attr("class")]
         var currentCellIndex = currentCol.indexOf("unplayed");
         currentCol[currentCellIndex] = currentColor[tracker.counter % 2];
-
-
 
 
 
@@ -48,8 +52,6 @@ $(document).ready(function(){
         var currentColRef = game1Ref.child(currentColIndex);
         var currentCellRef = currentColRef.child(currentCellIndex);
         currentCellRef.set(currentColor[tracker.counter % 2]);
-
-        // debugger;
 
         // // var dataRefUpdateJson = {currentColIndex: {currentCellIndex: currentColor[tracker.counter % 2]}};
 
@@ -84,8 +86,6 @@ $(document).ready(function(){
         // console.log(diagonalCheckLeftTop($currentDisc));
       }
       // $(".current-player .circle").css("background-color", currentColor[tracker.counter % 2]);
-
-
     });
   }
 

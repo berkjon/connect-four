@@ -1,107 +1,253 @@
-// testWinCount = 0;
 
-// var winCheck = function() {
-//   var winCount = 0;
-
-// }
-
-// var diagonalCheck = function(currentPlayedDisc) {
-//   // take current disc's current position
-
-//   // var testWinCount = 0
-//   if ((diagonalCheckLeft(currentPlayedDisc) == 4) || (diagonalCheckRight(currentPlayedDisc) == 4)) {
-//      return true;
-//   }
-
-//   return false;
-// };
-
-var diagonalCheckLeft = function(currentPlayedDisc) {
-  var leftWinCount = 1; //counts itself too
-  // console.log(leftWinCount);
-  // return diagonalCheckLeftBottom(currentPlayedDisc, leftWinCount)
-  return diagonalCheckLeftTop(currentPlayedDisc, leftWinCount) + diagonalCheckLeftBottom(currentPlayedDisc, leftWinCount)
+var getCurrentDiscColumn = function(currentDisc) {
+  return $(currentDisc).parent().attr("class");
 };
 
-var diagonalCheckRight = function(currentPlayedDisc) {
+var getColumnClassLeft = function(currentDiscColumn) {
+  return '.' + (currentDiscColumn - 1);
+};
 
+var getColumnClassRight = function(currentDiscColumn) {
+  return '.' + (+currentDiscColumn + 1);
+};
+
+var getNextDiscColor = function(nextDisc) {
+  return '.' + nextDisc.attr('class').split(' ')[1];
 };
 
 
+var getNorthWestCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discClassNorthWest = getColumnClassLeft(currentDiscColumn);
+  return $(currentDisc).parent().parent().prev().find(discClassNorthWest);
+};
 
-var diagonalCheckLeftTop = function(currentPlayedDisc, leftWinCount) {
-  // go left and up by traversing the dom
-    //use parent() to go up a level and prev()/next() to go forward or back a row
-    //assume arg is current disk (ie: div !!!VERY IMPORTANT!!!)
+var getSouthEastCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discColumnSouthEast = getColumnClassRight(currentDiscColumn);
+  return $(currentDisc).parent().parent().next().find(discColumnSouthEast);
+}
 
-  var self = currentPlayedDisc; //this refers to the disc being played
-  var currentDiscColumn = $(self).parent().attr("class");
-  var discColumnClassToTheLeft = currentDiscColumn - 1;
-  var discColumnClassToTheLeft = '.' + discColumnClassToTheLeft;
-  var cellToTheTopLeft = $(self).parent().parent().prev().find(discColumnClassToTheLeft);
+var getNorthEastCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discClassNorthEast = getColumnClassRight(currentDiscColumn);
+  return $(currentDisc).parent().parent().prev().find(discClassNorthEast);
+}
 
-  //check if top left has same class as current color
-  var currentPlayerColor = '.' + tracker.color;
-  var nextDisc = cellToTheTopLeft.find(currentPlayerColor);
+var getSouthWestCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discClassSouthWest = getColumnClassLeft(currentDiscColumn);
+  return $(currentDisc).parent().parent().next().find(discClassSouthWest);
+}
 
-  //if nextDisc doesn't exist OR is another color
-  //BASE CASE
+var getLeftCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discColumnClassLeft = getColumnClassLeft(currentDiscColumn);
+  return $(currentDisc).parent().parent().find(discColumnClassLeft);
+}
+
+var getRightCell = function(currentDisc) {
+  var currentDiscColumn = getCurrentDiscColumn(currentDisc);
+  var discColumnClassRight = getColumnClassRight(currentDiscColumn);
+  return $(currentDisc).parent().parent().find(discColumnClassRight);
+}
+
+var diagonalCheck = function(currentDisc, color) {
+  winCountLeft = diagonalCheckLeft(currentDisc, color);
+  winCountRight = diagonalCheckRight(currentDisc, color);
+
+  if (checkWinner(winCountLeft) || checkWinner(winCountRight)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+var getColorClass = function(color) {
+  return '.' + color;
+};
+
+var getCurrentColumn = function(currentDisc) {
+  return $(currentDisc).parent().attr('class');
+}
+
+var getNextRow = function(currentDisc) {
+  return $(currentDisc).parent().parent().next();
+}
+
+var getNextDisc = function(currentDisc, nextRow) {
+  currentColumnClass = '.' + getCurrentColumn(currentDisc);
+  return nextRow.find(currentColumnClass).children(':first-child')
+}
+
+var checkWinner = function(currentWinCount) {
+  if (currentWinCount >= 4) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+///////////////////////////////////////////LEFT
+
+var diagonalCheckLeft = function(currentDisc, color) {
+  var currentWinCount = 1; //counts itself too
+  var currentColor = color;
+  currentWinCount = diagonalNorthWest(currentDisc, currentWinCount, currentColor);
+  currentWinCount = diagonalSouthEast(currentDisc, currentWinCount, currentColor);
+
+  return currentWinCount;
+};
+
+var diagonalNorthWest = function(currentDisc, currentWinCount, currentColor) {
+
+  var cellToTheNorthWest = getNorthWestCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
+  var nextDisc = cellToTheNorthWest.find(currentPlayerColor);
+
   if (nextDisc.length === 0) {
-    //return out of function
-
-    //could return winCount
-    return leftWinCount;
+    return currentWinCount;
   }
 
-  var nextDiscColor = '.' + nextDisc.attr('class').split(' ')[1];
-
-  if (currentPlayerColor == nextDiscColor) {
-    //loop again, using cellToTheTopLeft as the checked disc use recursion
-
-    //change to actual winCount
-    leftWinCount++;
-    diagonalCheckLeftTop(nextDisc, leftWinCount);
+  var nextDiscColor = getNextDiscColor(nextDisc);
+  if (currentPlayerColor === nextDiscColor) {
+    currentWinCount++;
+    return diagonalNorthWest(nextDisc, currentWinCount);
   }
-
-  //change to actual winCount
-  return leftWinCount;
 };
 
-//or bottom right. however you look at it. Think of it as northwest to southeast
-var diagonalCheckLeftBottom = function(currentPlayedDisc, leftWinCount) {
-  // go left and up by traversing the dom
-    //use parent() to go up a level and prev()/next() to go forward or back a row
-    //assume arg is current disk (ie: div !!!VERY IMPORTANT!!!)
+var diagonalSouthEast = function(currentDisc, currentWinCount, currentColor) {
 
-  var self = currentPlayedDisc; //this refers to the disc being played
-  var currentDiscColumn = $(self).parent().attr("class");
   //added a + in front of currentDiscColumn to make it an integer
-  var discColumnClassToTheRight = +currentDiscColumn + 1;
-  var discColumnClassToTheRight = '.' + discColumnClassToTheRight;
-  var cellToTheBotRight = $(self).parent().parent().next().find(discColumnClassToTheRight);
+  var cellToTheSouthEast = getSouthEastCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
+  var nextDisc = cellToTheSouthEast.find(currentPlayerColor);
 
-  //check if top left has same class as current color
-  var currentPlayerColor = '.' + tracker.color;
-  var nextDisc = cellToTheBotRight.find(currentPlayerColor);
-
-  //if nextDisc doesn't exist OR is another color
   if (nextDisc.length === 0) {
-    //return out of function
-
-    //could return winCount, or false, doesn't matter
-    return 0;
+    return currentWinCount;
   }
 
-  var nextDiscColor = '.' + nextDisc.attr('class').split(' ')[1];
-
-  if (currentPlayerColor == nextDiscColor) {
-    //loop again, using cellToTheTopLeft as the checked disc use recursion
-
-    //change to actual winCount
-    leftWinCount++;
-    diagonalCheckLeftBottom(nextDisc, leftWinCount);
+  var nextDiscColor = getNextDiscColor(nextDisc);
+  if (currentPlayerColor === nextDiscColor) {
+    currentWinCount++;
+    return diagonalSouthEast(nextDisc, currentWinCount);
   }
-
-  //change to actual winCount
-  return leftWinCount;
 };
+
+
+//////////////////////////////////////RIGHT
+
+
+var diagonalCheckRight = function(currentDisc, color) {
+  var currentWinCount = 1; //counts itself too
+  var currentColor = color;
+  currentWinCount = diagonalNorthEast(currentDisc, currentWinCount, currentColor);
+  currentWinCount = diagonalSouthWest(currentDisc, currentWinCount, currentColor);
+
+  return currentWinCount;
+}
+
+var diagonalNorthEast = function(currentDisc, currentWinCount, currentColor) {
+
+  var cellToTheNorthEast = getNorthEastCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
+  var nextDisc = cellToTheNorthEast.find(currentPlayerColor);
+
+  if (nextDisc.length === 0) {
+    return currentWinCount;
+  }
+
+  var nextDiscColor = getNextDiscColor(nextDisc);
+  if (currentPlayerColor === nextDiscColor) {
+    currentWinCount++;
+    return diagonalNorthEast(nextDisc, currentWinCount);
+  }
+};
+
+var diagonalSouthWest = function(currentDisc, currentWinCount, currentColor) {
+
+  var cellToTheSouthWest = getSouthWestCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
+  var nextDisc = cellToTheSouthWest.find(currentPlayerColor);
+
+  if (nextDisc.length === 0) {
+    return currentWinCount;
+  }
+
+  var nextDiscColor = getNextDiscColor(nextDisc);
+  if (currentPlayerColor === nextDiscColor) {
+    currentWinCount++;
+    return diagonalSouthWest(nextDisc, currentWinCount);
+  }
+};
+
+//////////////////////////////////////HORIZONTAL
+
+
+var horizontalCheck = function(currentDisc) {
+  var currentWinCount = 1;
+
+  leftWinCount = checkLeft(currentDisc, currentWinCount)
+  totalWinCount = checkRight(currentDisc, leftWinCount)
+
+  return checkWinner(currentWinCount);
+
+};
+
+var checkLeft = function(currentDisc, currentWinCount) {
+  var cellToTheLeft = getLeftCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color);
+  var nextDisc = cellToTheLeft.find(currentPlayerColor);
+
+  if (nextDisc.length === 0) {
+    return currentWinCount;
+  }
+
+  var nextDiscColor = getNextDiscColor(nextDisc);
+  if (currentPlayerColor === nextDiscColor) {
+    currentWinCount++;
+    return checkLeft(nextDisc, currentWinCount);
+  }
+};
+
+var checkRight = function(currentDisc, currentWinCount) {
+  var cellToTheRight = getRightCell(currentDisc);
+  var currentPlayerColor = getColorClass(tracker.color)
+  var nextDisc = cellToTheRight.find(currentPlayerColor);
+
+  if (nextDisc.length === 0) {
+    return currentWinCount;
+  }
+
+  var nextDiscColor = getNextDiscColor(nextDisc);
+  if (currentPlayerColor === nextDiscColor) {
+    currentWinCount++;
+    return checkRight(nextDisc, currentWinCount);
+  }
+};
+
+//////////////////////////////////////RIGHT
+var verticalCheck = function(currentDisc, currentColor) {
+  currentWinCount = 1;
+  verticalHelper(currentDisc, currentColor);
+
+  return checkWinner(currentWinCount);
+}
+
+var verticalHelper= function(currentDisc, currentColor) {
+
+  nextRow = getNextRow(currentDisc);
+  nextDisc = getNextDisc(currentDisc, nextRow);
+
+  if (nextRow.length === 0) {
+    return currentWinCount;
+  }
+
+  if ( $(nextDisc).attr('class').match(currentColor) ) {
+    currentWinCount++;
+    return verticalHelper(nextDisc);
+  } else {
+    return currentWinCount;
+  }
+
+}
